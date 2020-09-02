@@ -1,0 +1,29 @@
+<configuration>
+    <property name="log.path" value="logs"/>
+    <property name="app_name" value="qqbot"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/${app_name}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/${app_name}-%d{yyyy-MM-dd-HH}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>25MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+</configuration>
