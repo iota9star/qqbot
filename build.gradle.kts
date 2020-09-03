@@ -6,6 +6,7 @@ val h2_version: String by project
 val koin_version: String by project
 val mail_version: String by project
 val cli_version: String by project
+val exposed_version: String by project
 
 plugins {
     application
@@ -19,7 +20,7 @@ group = "io.nichijou"
 version = "0.0.1"
 
 application {
-    mainClassName = "io.nichijou.LauncherKt"
+  mainClassName = "io.nichijou.qqbot.LauncherKt"
 }
 
 repositories {
@@ -47,30 +48,32 @@ dependencies {
     implementation("io.ktor:ktor-auth:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:$ktor_version")
     implementation("io.ktor:ktor-jackson:$ktor_version")
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
-    implementation("io.ktor:ktor-client-logging-jvm:$ktor_version")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
-    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+  implementation("io.ktor:ktor-client-core:$ktor_version")
+  implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
+  implementation("io.ktor:ktor-client-cio:$ktor_version")
+  implementation("io.ktor:ktor-client-logging-jvm:$ktor_version")
+  implementation("ch.qos.logback:logback-classic:$logback_version")
+  testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 
-    implementation("com.h2database:h2:$h2_version")
-    implementation("com.zaxxer:HikariCP:latest.release")
-    implementation("org.jetbrains.exposed:exposed:latest.integration")
-    implementation("org.jetbrains.exposed:exposed-core:latest.integration")
-    implementation("org.jetbrains.exposed:exposed-jdbc:latest.integration")
+  implementation("com.h2database:h2:$h2_version")
+  implementation("com.zaxxer:HikariCP:latest.release")
 
-    implementation("com.github.ajalt:clikt:$cli_version")
+  implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+  implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+  implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+  implementation("org.jetbrains.exposed:exposed-jodatime:$exposed_version")
 
-    // mirai
-    implementation("net.mamoe:mirai-core:latest.integration")
-    implementation("net.mamoe:mirai-core-qqandroid-jvm:latest.integration")
+  implementation("com.github.ajalt.clikt:clikt:$cli_version")
 
-    implementation("org.koin:koin-ktor:$koin_version")
-    implementation("org.koin:koin-logger-slf4j:$koin_version")
+  // mirai
+  implementation("net.mamoe:mirai-core:latest.integration")
+  implementation("net.mamoe:mirai-core-qqandroid-jvm:latest.integration")
 
-    implementation("org.simplejavamail:simple-java-mail:$mail_version")
-    implementation("org.simplejavamail:batch-module:$mail_version")
+  implementation("org.koin:koin-ktor:$koin_version")
+  implementation("org.koin:koin-logger-slf4j:$koin_version")
+
+  implementation("org.simplejavamail:simple-java-mail:$mail_version")
+  implementation("org.simplejavamail:batch-module:$mail_version")
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")
