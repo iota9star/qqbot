@@ -16,7 +16,7 @@ fun Route.githubRoutes() {
     post("/hooks") {
       val result = call.receiveOrNull<Map<*, *>>()
       if (result != null) {
-        Bot.getInstance(1).getGroup(1).sendMessage(objectMapper.writeValueAsString(result))
+        Bot.getInstance(1).getGroup(1)?.sendMessage(objectMapper.writeValueAsString(result))
       }
       call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
     }

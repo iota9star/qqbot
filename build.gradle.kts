@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val ktor_version: String by project
 val kotlin_version: String by project
 val kotlin_coroutines_version: String by project
@@ -9,11 +11,17 @@ val cli_version: String by project
 val exposed_version: String by project
 
 plugins {
-    application
-    kotlin("jvm") version "1.4.0"
-    kotlin("kapt") version "1.4.0"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
-    id("com.diffplug.gradle.spotless") version "3.30.0"
+  application
+  kotlin("jvm") version "1.4.31"
+  kotlin("kapt") version "1.4.31"
+  id("com.github.johnrengelman.shadow") version "5.2.0"
+  id("com.diffplug.gradle.spotless") version "3.30.0"
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+  kotlinOptions {
+    useIR = true
+  }
 }
 
 group = "io.nichijou"
@@ -24,30 +32,30 @@ application {
 }
 
 repositories {
-    mavenLocal()
-    jcenter()
-    google()
-    maven { url = uri("https://plugins.gradle.org/m2/") }
-    maven { url = uri("https://kotlin.bintray.com/kotlin-eap") }
-    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-    maven { url = uri("https://kotlin.bintray.com/ktor") }
-    maven { url = uri("https://kotlin.bintray.com/exposed") }
+  mavenLocal()
+  jcenter()
+  google()
+  maven { url = uri("https://plugins.gradle.org/m2/") }
+  maven { url = uri("https://kotlin.bintray.com/kotlin-eap") }
+  maven { url = uri("https://kotlin.bintray.com/kotlinx") }
+  maven { url = uri("https://kotlin.bintray.com/ktor") }
+  maven { url = uri("https://kotlin.bintray.com/exposed") }
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version")
-    implementation("io.ktor:ktor-server-cio:$ktor_version")
-    implementation("io.ktor:ktor-websockets:$ktor_version")
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-mustache:$ktor_version")
-    implementation("io.ktor:ktor-server-host-common:$ktor_version")
-    implementation("io.ktor:ktor-locations:$ktor_version")
-    implementation("io.ktor:ktor-metrics:$ktor_version")
-    implementation("io.ktor:ktor-auth:$ktor_version")
-    implementation("io.ktor:ktor-auth-jwt:$ktor_version")
-    implementation("io.ktor:ktor-jackson:$ktor_version")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+  implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version")
+  implementation("io.ktor:ktor-server-cio:$ktor_version")
+  implementation("io.ktor:ktor-websockets:$ktor_version")
+  implementation("io.ktor:ktor-server-core:$ktor_version")
+  implementation("io.ktor:ktor-mustache:$ktor_version")
+  implementation("io.ktor:ktor-server-host-common:$ktor_version")
+  implementation("io.ktor:ktor-locations:$ktor_version")
+  implementation("io.ktor:ktor-metrics:$ktor_version")
+  implementation("io.ktor:ktor-auth:$ktor_version")
+  implementation("io.ktor:ktor-auth-jwt:$ktor_version")
+  implementation("io.ktor:ktor-jackson:$ktor_version")
   implementation("io.ktor:ktor-client-core:$ktor_version")
   implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
   implementation("io.ktor:ktor-client-cio:$ktor_version")
@@ -66,11 +74,10 @@ dependencies {
   implementation("com.github.ajalt.clikt:clikt:$cli_version")
 
   // mirai
-  implementation("net.mamoe:mirai-core:latest.integration")
-  implementation("net.mamoe:mirai-core-qqandroid-jvm:latest.integration")
+  implementation("net.mamoe:mirai-core-all:latest.integration")
 
-  implementation("org.koin:koin-ktor:$koin_version")
-  implementation("org.koin:koin-logger-slf4j:$koin_version")
+  implementation("io.insert-koin:koin-ktor:$koin_version")
+  implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
 
   implementation("org.simplejavamail:simple-java-mail:$mail_version")
   implementation("org.simplejavamail:batch-module:$mail_version")
@@ -86,42 +93,42 @@ sourceSets["main"].resources.srcDirs("resources")
 sourceSets["test"].resources.srcDirs("testresources")
 
 kapt {
-    useBuildCache = false
+  useBuildCache = false
 }
 
 spotless {
-    kotlin {
-        ktlint().userData(
-            mapOf(
-                "indent_size" to "2",
-                "continuation_indent_size" to "2",
-                "disabled_rules" to "no-wildcard-imports,experimental:annotation"
-            )
-        )
-    }
+  kotlin {
+    ktlint().userData(
+      mapOf(
+        "indent_size" to "2",
+        "continuation_indent_size" to "2",
+        "disabled_rules" to "no-wildcard-imports,experimental:annotation"
+      )
+    )
+  }
 
-    kotlinGradle {
-        ktlint().userData(
-            mapOf(
-                "indent_size" to "2",
-                "continuation_indent_size" to "2",
-                "disabled_rules" to "no-wildcard-imports,experimental:annotation"
-            )
-        )
-    }
+  kotlinGradle {
+    ktlint().userData(
+      mapOf(
+        "indent_size" to "2",
+        "continuation_indent_size" to "2",
+        "disabled_rules" to "no-wildcard-imports,experimental:annotation"
+      )
+    )
+  }
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    shadowJar {
-        dependsOn(spotlessApply)
+  compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+  }
+  compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+  }
+  shadowJar {
+    dependsOn(spotlessApply)
 //        minimize()
-    }
+  }
 //  register<proguard.gradle.ProGuardTask>("proguardJar") {
 //    dependsOn(shadowJar)
 //    injars("build/libs/qqbot-$version-all.jar")
@@ -147,9 +154,9 @@ tasks {
 //  }
 }
 tasks.withType<Jar> {
-    manifest {
-        attributes(
-            mapOf("Main-Class" to application.mainClassName)
-        )
-    }
+  manifest {
+    attributes(
+      mapOf("Main-Class" to application.mainClassName)
+    )
+  }
 }

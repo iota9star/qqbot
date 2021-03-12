@@ -3,10 +3,10 @@ package io.nichijou.qqbot
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
+import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.event.subscribeFriendMessages
-import net.mamoe.mirai.event.subscribeMessages
-import net.mamoe.mirai.join
+import net.mamoe.mirai.utils.BotConfiguration
 
 class QQBot(private val conf: QQConf) {
 
@@ -18,8 +18,9 @@ class QQBot(private val conf: QQConf) {
 
   private suspend fun login() {
     conf.accounts?.map {
-      Bot(it.qq, it.password) {
+      BotFactory.newBot(it.qq, it.password) {
         fileBasedDeviceInfo()
+        protocol = BotConfiguration.MiraiProtocol.ANDROID_PAD
       }.alsoLogin()
     }?.forEach {
       handleBot(it)
@@ -27,12 +28,11 @@ class QQBot(private val conf: QQConf) {
   }
 
   suspend fun handleBot(bot: Bot) {
-    bot.subscribeMessages {
-    }
-    bot.subscribeFriendMessages {
-      contains("abc") {
-        reply("abc")
+    bot.eventChannel.subscribeFriendMessages {
+      "hello"{
+
       }
+      "你好" reply "憨憨"
     }
     bot.join()
   }

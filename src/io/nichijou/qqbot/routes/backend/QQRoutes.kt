@@ -12,7 +12,7 @@ import net.mamoe.mirai.Bot
 fun Route.qqRoutes() {
   route("/qq") {
     get("/list") {
-      val list = Bot.botInstances.map {
+      val list = Bot.instances.map {
         QQResp(id = it.id, nickname = it.nick, online = it.isOnline, friends = it.friends.size, groups = it.groups.size)
       }
       call.respond(R.ok(list))
